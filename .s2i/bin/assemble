@@ -1,0 +1,17 @@
+#!/bin/bash -e
+# The assemble script builds the application artifacts from a source and
+# places them into appropriate directories inside the image.
+
+# Execute the default S2I script
+source ${STI_SCRIPTS_PATH}/assemble
+
+# You can write S2I scripts in any programming language, as long as the
+# scripts are executable inside the builder image.
+
+# Install Dynatrace
+export DT_HOME="/opt/app-root/opt/dynatrace/oneagent"
+mkdir -p "$DT_HOME"
+# I *think* `include` can be: all, nodejs, apache, java, go, nginx, wsmb, process, php, or dotnet
+wget -O "$DT_HOME/oneagent.zip" "https://$DT_ENV_ID.live.dynatrace.com/api/v1/deployment/installer/agent/unix/paas/latest?Api-Token=$DT_API_TOKEN&flavor=default&include=nodejs"
+unzip -d "$DT_HOME" "$DT_HOME/oneagent.zip"
+rm "$DT_HOME/oneagent.zip"

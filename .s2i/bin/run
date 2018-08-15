@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+export DT_HOME="/opt/app-root/opt/dynatrace/oneagent"
+exec $DT_HOME/dynatrace-agent64.sh npm run -d start
